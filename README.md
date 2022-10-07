@@ -1,2 +1,2 @@
-# personal-python-project-template
-Personal template for python project with source directory
+# forcetable
+Creates records and fields also calculates fields cartesian product.

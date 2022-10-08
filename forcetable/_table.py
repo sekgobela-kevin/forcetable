@@ -307,16 +307,16 @@ class primary_table(table):
                 # Primary field shouldnt be included(removed it)
                 fields.discard(self._primary_field)
                 # Uses table to convert the fields to records
-                table = table(fields)
+                table_ = table(fields)
                 # Create field for representing item
                 item_field = field(primary_field_name, [primary_item])
                 item_field.set_item_name(primary_field_item_name)
                 # Now add the field to the table
-                table.add_field(item_field)
+                table_.add_field(item_field)
                 # Provides table with common record
-                table.set_common_record(self._common_record)
+                table_.set_common_record(self._common_record)
                 # Return records from table created from the fields
-                yield table.get_records()
+                yield table_.get_records()
         else:
             err_msg = "Primary field is required, but not found"
             raise exceptions.PrimaryfieldNotFound(err_msg)
@@ -364,7 +364,7 @@ class records_table(table):
 
 def extract_record_primary_item(record, primary_field):
     '''Returns primary item from record'''
-    field_name = primary_field.get_item_name(True)
+    field_name = primary_field.get_item_name()
     # Rember that record is instance of dict
     primary_item = record[field_name]
     return primary_item
@@ -403,9 +403,9 @@ def records_to_fields(
     for item_name, items in item_names_map.items():
         if item_name not in common_record:
             field_name = fields_names_map.get(item_name, item_name)
-            field = field(field_name, items)
-            field.set_item_name(item_name)
-            fields.append(field)
+            field_ = field(field_name, items)
+            field_.set_item_name(item_name)
+            fields.append(field_)
     return fields
 
              
@@ -428,10 +428,10 @@ def records_to_table(
             common_record=common_record,
             unique=True
         )
-        table = table(fields)
-        primary_field = table.get_field_by_name(primary_field_name)
-        table.set_primary_field(primary_field)
-        return table
+        table_ = table(fields)
+        primary_field = table_.get_field_by_name(primary_field_name)
+        table_.set_primary_field(primary_field)
+        return table_
 
 def dicts_to_records(dicts: Iterator[Dict]):
     '''Returns corresponding records objects from dictionaries(dict)'''

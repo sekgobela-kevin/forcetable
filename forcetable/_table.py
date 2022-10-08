@@ -97,7 +97,7 @@ class table():
             if field.get_name() == name:
                 return field
         err_msg = "field with name '{}' not found"
-        raise exceptions.fieldNotFound(err_msg.format(name))
+        raise exceptions.FieldNotFound(err_msg.format(name))
 
     def get_field_by_item_name(self, name, force=False):
         '''Gets field by its item name(raises exception if not found)'''
@@ -106,7 +106,7 @@ class table():
             if field.get_item_name() == name:
                 return field
         err_msg = "field with item name '{}' not found"
-        raise exceptions.fieldNotFound(err_msg.format(name))
+        raise exceptions.FieldNotFound(err_msg.format(name))
 
     def get_records(self):
         '''Returns records of the table'''

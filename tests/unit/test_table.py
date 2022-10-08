@@ -89,7 +89,8 @@ class TestTableCommon(TestTableSetUp):
 
 
     def test_get_primary_fields(self):
-        self.assertCountEqual(self.table.get_primary_fields(), [self.usernames_field])
+        self.assertCountEqual(self.table.get_primary_fields(), 
+        [self.usernames_field])
         self.assertCountEqual(self.empty_table.get_primary_fields(), [])
 
     def test_get_primary_field(self):
@@ -100,6 +101,12 @@ class TestTableCommon(TestTableSetUp):
         self.assertCountEqual(self.table.get_fields(), [self.usernames_field, 
         self.passwords_field])
         self.assertCountEqual(self.empty_table.get_fields(), [])
+
+    def test_get_other_fields(self):
+        primary_field = self.table.get_primary_field()
+        other_fields = self.table.get_fields().difference([primary_field])
+        self.assertCountEqual(self.table.get_other_fields(), other_fields)
+        self.assertCountEqual(self.empty_table.get_other_fields(), [])
 
     def test_get_field_by_name(self):
         self.assertEqual(
@@ -159,13 +166,16 @@ class TestTableCommon(TestTableSetUp):
     def test_fields_to_records(self):
         records = self.table.dicts_to_records(self.dict_records)
         fields = [self.usernames_field, self.passwords_field]
-        self.assertCountEqual(self.table.fields_to_records(fields, self.common_record), 
-        records)
+        fields_records = self.table.fields_to_records(
+            fields, common_record=self.common_record,
+        )
+        self.assertCountEqual(fields_records, records)
         self.assertCountEqual([], [])
 
     def test_set_common_record(self):
         self.empty_table.set_common_record(self.common_record)
-        self.assertEqual(self.empty_table.get_common_record(), self.common_record)
+        self.assertEqual(self.empty_table.get_common_record(), 
+        self.common_record)
 
     def test_get_common_record(self):
         self.assertEqual(self.empty_table.get_common_record(), record())
@@ -258,14 +268,18 @@ class TestFunctions(TestTableSetUp, unittest.TestCase):
         self.fields = [self.usernames_field, self.passwords_field]
         self.records = list(self.table.get_records())
 
-        self.record = record({'password': '1234', 'submit': 'login', 'username': 'Bella'})
-        self.record2 = record({'password': 'th234', 'submit': 'login', 'username': 'Marry'})
+        self.record = record({'password': '1234', 'submit': 'login', 
+        'username': 'Bella'})
+        self.record2 = record({'password': 'th234', 'submit': 'login', 
+        'username': 'Marry'})
 
 
     def test_extract_record_primary_item(self):
-        record_item = _table.extract_record_primary_item(self.record, self.usernames_field)
+        record_item = _table.extract_record_primary_item(self.record, 
+        self.usernames_field)
         self.assertEqual(record_item, 'Bella')
-        record_item = _table.extract_record_primary_item(self.record2, self.usernames_field)
+        record_item = _table.extract_record_primary_item(self.record2, 
+        self.usernames_field)
         self.assertEqual(record_item, 'Marry')
 
 

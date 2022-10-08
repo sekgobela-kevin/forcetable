@@ -83,8 +83,12 @@ class table():
         return self._primary_field
 
     def get_fields(self):
-        '''Returns primary fields'''
+        '''Gets fields of table'''
         return self._fields
+
+    def get_other_fields(self):
+        '''Gets fields of table excluding primary field'''
+        return self._fields.difference([self._primary_field])
 
     def get_field_by_name(self, name):
         '''Gets field by its name(raises exception if not found)'''
@@ -161,8 +165,17 @@ class table():
     @classmethod
     def fields_to_records(cls, 
     fields, 
+    primary_field=None,
     common_record=record()):
         '''Returns records from fields'''
+        if primary_field:
+            if not isinstance(primary_field, field):
+                type_name = primary_field.__class__.__name__
+                err_msg = "Primary field should of type 'field' not '{}'."
+                raise TypeError(err_msg.format(type_name))
+            # Let primary field be the first one.
+            # Important when calculating cartisian product.
+            fields = sorted(fields, key=lambda f: f != primary_field)
         # Get fields item names(will act as keys)
         # 'item_name' is more suitable than 'name'(name of coulumn)
         field_names = [field.get_item_name() for field in fields]
@@ -202,7 +215,7 @@ class table():
             raise exceptions.FieldNotFound(err_msg)
         if len(fields) == 1:
             records = cls.fields_to_records(
-                fields, common_record
+                fields, primary_field, common_record
             )
             # All items of primary record are treated as group
             yield records
@@ -217,7 +230,7 @@ class table():
                 fields = other_fields.union([field])
                 # Creates records the fields
                 records =  cls.fields_to_records(
-                    fields, common_record
+                    fields, primary_field, common_record
                 )
                 yield records
 
@@ -246,6 +259,7 @@ class table():
         '''Updates table records to keep-up with fields'''
         self._records = self.fields_to_records(
             self._fields, 
+            self._primary_field,
             self._common_record
         )
 
@@ -280,7 +294,7 @@ class primary_table(table):
     #         fields = other_fields.union([field])
     #         # Creates records the fields
     #         records =  self.fields_to_records(
-    #             fields, self._common_record
+    #             fields, self.primary_field, self._common_record
     #         )
     #     return records
 

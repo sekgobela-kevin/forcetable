@@ -167,9 +167,9 @@ class table():
         # 'item_name' is more suitable than 'name'(name of coulumn)
         field_names = [field.get_item_name() for field in fields]
         # Gets items of field into 2D list.
-        field_items_methods = [field.get_items for field in fields]
+        fields_items = [field.get_items(True) for field in fields]
         # Uses prodius.product() to calculate cartesian product.
-        for product_item in prodius.product(*field_items_methods):
+        for product_item in prodius.product(*fields_items):
             # product_item contain atleat item from each field.
             if not product_item:
                 break
@@ -197,11 +197,9 @@ class table():
         # other_fields needs to exclude primary field
         other_fields = fields.copy()
         other_fields.discard(primary_field)
-        # Loop each of primary field items
-        primary_grouped_records = []
         if primary_field not in fields:
             err_msg = "primary_field not in fields"
-            raise ValueError(err_msg)
+            raise exceptions.FieldNotFound(err_msg)
         if len(fields) == 1:
             records = cls.fields_to_records(
                 fields, common_record
@@ -209,6 +207,7 @@ class table():
             # All items of primary record are treated as group
             yield records
         else:
+            # Loop each of primary field items
             for primary_item in primary_items:
                 # Creates field for primary field
                 # Name of field is taken from primary field
@@ -221,7 +220,6 @@ class table():
                     fields, common_record
                 )
                 yield records
-        return primary_grouped_records
 
     def records_primary_grouped(self):
         '''Returns records of table grouped by primary field items'''

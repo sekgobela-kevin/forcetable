@@ -63,11 +63,14 @@ class field():
         return self._read_items()
 
 
-    def get_items(self):
-        '''Returns items of field'''
-        if (not callable(self._items)) or self._read_all:
-            # Return items if items is not callable or 
-            # self._read_all is True.
+    def get_items(self, original=False):
+        '''Returns items of field.
+
+        -------------------------------------------------
+        original: Bool
+            Forces to get original items passed field(not guaranteed).
+        '''
+        if original or self._read_all or not callable(self._items):
             return self._items
         else:
             return self.read_items()

@@ -136,7 +136,7 @@ table = forcetable.records_to_table([record1, record2])
 # Table from dictionaries(list of dict)
 dict1 = {'passwords': 0, 'usernames': 'Ben'}
 dict2 = {'passwords': 1, 'usernames': 'Jackson'}
-table = forcetable.table([dict1, dict2])
+#table = forcetable.dicts_to_table([dict1, dict2])
 
 # Table from csv and json files.
 # Json needs to be in table like structure, [{}, {}, {}].
@@ -159,12 +159,13 @@ Here are some useful methods for field.
 ```python
 usernames = forcetable.field("usernames", ["Ben", "Jackson", "Marry"])
 usernames.get_items() # Gets items of field
-usernames.get_name("usernames") # Gets name of field
-usernames.get_item_name("usernames") # Gets name to use within records
+usernames.get_name() # Gets name of field
+usernames.get_item_name() # Gets name to use within records
+usernames.set_item_name("username") # Sets name to use within records
 
 usernames.set_primary() # Sets field as primary field
 usernames.unset_primary() # Unset field as primary field
-usernames.is_primary_field("usernames") # True if field is primary field
+usernames.is_primary() # True if field is primary field
 ```
 
 Here are some useful methods for table.
@@ -181,14 +182,14 @@ table.set_primary_field(usernames) # Sets primary field
 table.get_primary_field() # Gets primary field of table(None if not exists)
 table.primary_field_exists() # Checks if primary field exists
 
-table.get_field_by_name("") # Gets field with name
-table.get_field_by_name("") # Gets field with item name.
+table.get_field_by_name("usernames") # Gets field with name
+table.get_field_by_item_name("username") # Gets field with item name.
 ```
 
 
-### Inspired By:
-    - [perock](https://github.com/sekgobela-kevin/perock)
-    - [prodius](https://github.com/sekgobela-kevin/prodius)
+### Inspired by:
+- [perock](https://github.com/sekgobela-kevin/perock)
+- [prodius](https://github.com/sekgobela-kevin/prodius)
 
 ### License
 Forcetable is open source under conditions of [MIT license](https://github.\

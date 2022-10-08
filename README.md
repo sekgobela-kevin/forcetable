@@ -12,7 +12,7 @@ calculate cartesian product yourself letting you focus on what matters.
 
 
 ### Installing
-Forcetable can be installed with in your command-line application.
+Forcetable can be installed pip with in your command-line application.
 ```bash
 pip install forcetable
 ```
@@ -192,5 +192,5 @@ table.get_field_by_item_name("username") # Gets field with item name.
 - [prodius](https://github.com/sekgobela-kevin/prodius)
 
 ### License
-Forcetable is open source under conditions of [MIT license](https://github.\
-com/sekgobela-kevin/forcetable/blob/main/LICENSE).
+Forcetable is open source under conditions of 
+[MIT license](https://github.com/sekgobela-kevin/forcetable/blob/main/LICENSE).

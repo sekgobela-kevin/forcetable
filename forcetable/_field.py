@@ -116,25 +116,26 @@ class file_field(field):
         '''
         self._path = path
         self._file = open(path)
-        super().__init__(name, self._read_file_items, read_all)
+
+        def file_items_func():
+            # Returns generator with items of files.
+            # Every call will recreate generator by seeking file to pos 0.
+            self._file.seek(0)
+            return self._read_file_items(self._file)
+        
+        super().__init__(name, file_items_func, read_all)
+        # Close file handle as its content will be read at once.
         if read_all:
-            # Close file handle as its content will be read at once.
-            # It will never be used again.
             self._file.close()
 
-    def _read_file_items(self):
+    @classmethod
+    def _read_file_items(cls, file):
         # Reads lines from file in path, returns generator.
         # This method may be called within __init__().
-        for line in self._file:
+        for line in file:
             line_ = line.rstrip("\n")
             if line_:
                 yield line_
-
-    def _read_items(self):
-        # Seeking may cause problems if file is used in multiple places.
-        # This method may be called within __init__().
-        self._file.seek(0)
-        return super()._read_items()
 
     def close(self):
         self._file.close()

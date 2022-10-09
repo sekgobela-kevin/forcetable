@@ -243,7 +243,7 @@ class table():
             )
         else:
             err_msg = "Primary field is required, but not found"
-            raise exceptions.PrimaryfieldNotFound(err_msg)
+            raise exceptions.PrimaryFieldNotFound(err_msg)
 
     def set_common_record(self, record):
         '''Sets record with items to be shared by all records'''
@@ -330,7 +330,7 @@ class primary_table(table):
                 yield table_.get_records()
         else:
             err_msg = "Primary field is required, but not found"
-            raise exceptions.PrimaryfieldNotFound(err_msg)
+            raise exceptions.PrimaryFieldNotFound(err_msg)
 
     def update_records(self):
         '''Updates table records to keep-up with fields'''

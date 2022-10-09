@@ -208,8 +208,7 @@ class table():
         '''Returns records grouped by primary field items'''
         primary_items = primary_field.get_items()
         # other_fields needs to exclude primary field
-        other_fields = fields.copy()
-        other_fields.discard(primary_field)
+        other_fields = set(fields).difference([primary_field])
         if primary_field not in fields:
             err_msg = "primary_field not in fields"
             raise exceptions.FieldNotFound(err_msg)
@@ -224,10 +223,10 @@ class table():
             for primary_item in primary_items:
                 # Creates field for primary field
                 # Name of field is taken from primary field
-                field = field(primary_field.get_name(), [primary_item])
-                field.set_item_name(primary_field.get_item_name())
+                field_ = field(primary_field.get_name(), [primary_item])
+                field_.set_item_name(primary_field.get_item_name())
                 # Merge the field with other fields
-                fields = other_fields.union([field])
+                fields = other_fields.union([field_])
                 # Creates records the fields
                 records =  cls.fields_to_records(
                     fields, primary_field, common_record

@@ -170,8 +170,24 @@ class TestTableCommon(TestTableSetUp):
             fields, common_record=self.common_record,
         )
         self.assertCountEqual(fields_records, records)
-        self.assertCountEqual([], [])
 
+    def test_fields_to_records_primary_grouped(self):
+        grouped_records = self.table.fields_to_records_primary_grouped(
+            self.table.get_fields(), 
+            self.table.get_primary_field(),
+            self.table.get_common_record()
+        )
+        # This test is not enough and may have dark spots.
+        # items of grouped_records are not tested for correctness.
+        self.assertEqual(len(list(grouped_records)), len(self.usernames))
+        grouped_records = self.table.fields_to_records_primary_grouped(
+            [self.usernames_field], 
+            self.table.get_primary_field(),
+            self.table.get_common_record()
+        )
+        # Single field results in single records group
+        self.assertEqual(len(list(grouped_records)), 1)
+        
     def test_set_common_record(self):
         self.empty_table.set_common_record(self.common_record)
         self.assertEqual(self.empty_table.get_common_record(), 
